@@ -7,8 +7,14 @@ import Typography from "@mui/material/Typography";
 
 function MovieCard(props) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia component="img" height="140" image="" alt="green iguana" />
+    <Card sx={{ maxWidth: "15%", margin: "5px" }}>
+      <CardMedia
+        component="img"
+        height="140"
+        image={`https://image.tmdb.org/t/p/w500/${props.imageUrl}
+`}
+        alt="green iguana"
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {props.title}
