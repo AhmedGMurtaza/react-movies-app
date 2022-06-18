@@ -16,30 +16,33 @@ function Home() {
   const [isSending, setIsSending] = React.useState(false);
   // fetch all movies on initial load
   React.useEffect(() => {
-    if (isSending) return;
-    setIsSending(true);
     fetch(
       "https://api.themoviedb.org/3/trending/movie/week?api_key=7e8953e4e1fdf1db393119c8e527facc"
     )
       .then((response) => response.json())
       .then((json) => {
-        setIsSending(false);
         console.log(json);
         setMovies(() => json.results.slice(0, 12));
       });
-  }, [setIsSending]);
+  }, []);
 
   let handleSearch = React.useCallback(() => {
     console.log(
-      `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&api_key=7e8953e4e1fdf1db393119c8e527facc`
+      `https://api.themoviedb.org/3/search/movie?query=api_key=7e8953e4e1fdf1db393119c8e527facc${
+        searchTerm.length <= 0 ? "" : "&query=" + searchTerm
+      }`
     );
+    setIsSending(true);
     fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${searchTerm}&api_key=7e8953e4e1fdf1db393119c8e527facc`
+      `https://api.themoviedb.org/3/search/movie?query=api_key=7e8953e4e1fdf1db393119c8e527facc${
+        searchTerm.length <= 0 ? "" : "&query=" + searchTerm
+      }`
     )
       .then((response) => response.json())
       .then((json) => {
+        setIsSending(false);
         console.log(json);
-        setMovies(() => json.results.slice(0, 12));
+        setMovies(() => json?.results?.slice(0, 12));
       });
   }, [searchTerm]);
 
@@ -70,7 +73,6 @@ function Home() {
             style={{ width: "60%" }}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {searchTerm}
 
           <Button
             size="small"
@@ -88,6 +90,7 @@ function Home() {
         <Box
           sx={{
             width: "100%",
+            border: "4px solid red",
             background: "#eaeaea",
             padding: "20px 10px",
             boxSizing: "border-box",
@@ -96,13 +99,24 @@ function Home() {
             justifyContent: "space-between"
           }}
         >
+          {/* show loading during until search completes  */}
+          {isSending && (
+            <Box sx={{ display: "block", width: "100%", textAlign: "center" }}>
+              <CircularProgress />
+            </Box>
+          )}
+
+          {/* if no movie found  */}
+          {!isSending && !movies.length && (
+            <center style={{ width: "100%" }}>No data found! </center>
+          )}
+
           {movies &&
             movies.map((movie) => (
               <Card title={movie.original_title} imageUrl={movie.poster_path} />
             ))}
 
           {/* until movies are fetched show loading  */}
-          {isSending && <CircularProgress />}
         </Box>
       </Container>
       {/* content wrapper  */}
