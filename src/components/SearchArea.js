@@ -4,18 +4,36 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 function SearchArea() {
-  <Box sx={{ width: "100%", background: "#cccccc", height: "200px" }}>
-    <TextField
-      fullWidth
-      id="standard-basic"
-      label="Standard"
-      variant="standard"
-    />
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        background: "#cccccc",
+        height: "120px",
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <TextField
+        fullWidth
+        id="standard-basic"
+        label="Standard"
+        variant="standard"
+        style={{ width: "60%" }}
+      />
 
-    <Button size="small" color="inherit">
-      Search
-    </Button>
-  </Box>;
+      <Button
+        size="small"
+        variant="contained"
+        color="info"
+        style={{ margin: "30px 0 0 10px", width: "120px" }}
+      >
+        Search
+      </Button>
+    </Box>
+  );
 }
 
 export default SearchArea;
